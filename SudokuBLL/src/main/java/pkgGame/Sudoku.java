@@ -19,14 +19,35 @@ public class Sudoku extends LatinSquare {
 	public int[][] getPuzzle() {
 		return null;
 	}
-
-	public int[] getRegion(int i) {
-		return null;
+	
+	public int[] getRegion(int iRow, int iCol) throws Exception {
+		int[][] puzzle = this.getPuzzle();
+		if (iCol >=iSize || iRow >= iSize) {
+			throw new Exception("Region Index Out of Bounds");
+		}
+		else {
+			int iSize = puzzle.length;
+			int iSizeSqrt = (int) Math.sqrt(iSize);
+			int i = (iCol/iSizeSqrt) + ((iRow/iSizeSqrt)*iSizeSqrt);
+			return getRegion(i);
+		}
+	}
+	
+	protected int[] getRegion(int iReg) throws Exception {
+		int[][] puzzle = this.getPuzzle();
+		int[] region = new int[puzzle.length];
+		int index = 0;
+		int iSize = puzzle.length;
+		int iSizeSqrt = (int) Math.sqrt(iSize);
+		if(iReg >= iSize)
+			throw new Exception ("Region Index Out of Bounds");
+		for (int iRow = (iReg/iSizeSqrt)* iSizeSqrt; iRow < (((iReg/iSize) +1)*iSizeSqrt); iRow ++){
+			region[index++] = puzzle[iRow][iCol];
+		}
 	}
 
-	public int[] getRegion(int x, int y) {
-		return null;
-	}
+
+
 
 	public boolean isSoduku() {
 		return false;
