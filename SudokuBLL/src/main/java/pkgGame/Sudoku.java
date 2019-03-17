@@ -42,8 +42,11 @@ public class Sudoku extends LatinSquare {
 		if(iReg >= iSize)
 			throw new Exception ("Region Index Out of Bounds");
 		for (int iRow = (iReg/iSizeSqrt)* iSizeSqrt; iRow < (((iReg/iSize) +1)*iSizeSqrt); iRow ++){
-			region[index++] = puzzle[iRow][iCol];
+			for(int iCol = (iReg % iSizeSqrt)* iSizeSqrt; iCol < (((iReg % iSizeSqrt)+1)*iSizeSqrt); iCol++) {
+				region[index++] = puzzle[iRow][iCol];
+			}
 		}
+		return region;
 	}
 
 
