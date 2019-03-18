@@ -50,16 +50,16 @@ public class Sudoku extends LatinSquare {
 	}
 
 	public boolean hasDuplicates(){
-		boolean dup = false;
+		boolean hasDuplicates = false;
 		if(super.hasDuplicates()) {
 			return true;
 		}
 		for(int i = 0; i< this.getLatinSquare().length;i++) {
 				if(hasDuplicates(this.getRegion(i))) {
-					dup = true;
+					hasDuplicates = true;
 				}
 		}
-		return dup;
+		return hasDuplicates;
 	}
 
 
