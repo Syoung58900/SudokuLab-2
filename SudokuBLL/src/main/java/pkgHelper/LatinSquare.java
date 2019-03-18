@@ -245,7 +245,13 @@ public class LatinSquare {
 
 		return isLatinSquare;
 	}
-
+	private int[] RemoveZeros(int[] arr) {
+		
+		while(ArrayUtils.contains(arr, 0)) {
+            arr = ArrayUtils.removeElement(arr, 0);
+		}
+		return arr;	
+	}
 	/**
 	 * set LatinSquare instance attribute
 	 * 
