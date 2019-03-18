@@ -49,7 +49,18 @@ public class Sudoku extends LatinSquare {
 		return region;
 	}
 
-
+	public boolean hasDuplicates(){
+		boolean dup = false;
+		if(super.hasDuplicates()) {
+			return true;
+		}
+		for(int i = 0; i< this.getLatinSquare().length;i++) {
+				if(hasDuplicates(this.getRegion(i))) {
+					dup = true;
+				}
+		}
+		return dup;
+	}
 
 
 	public boolean isSoduku() {
