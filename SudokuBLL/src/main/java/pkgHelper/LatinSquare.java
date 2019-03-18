@@ -183,6 +183,20 @@ public class LatinSquare {
 	 * @param arr - one dimensional array to check for duplicates
 	 * @return - returns 'true' if any of the elements are duplicate
 	 */
+	public boolean hasDuplicates() {
+		boolean hasDuplicates = false;
+		for(int i = 0; i< this.LatinSquare.length;i++) {
+			if(hasDuplicates(this.getRow(i))) {
+				hasDuplicates = true;
+			}
+		}
+		for(int i =0; i<this.LatinSquare.length;i++) {
+			if(hasDuplicates(this.getColumn(i))) {
+				hasDuplicates = true;
+			}
+		}
+		return hasDuplicates;
+	}
 	public boolean hasDuplicates(int[] arr) {
 
 		// TODO: Return 'true' if any element in arr is duplicate
