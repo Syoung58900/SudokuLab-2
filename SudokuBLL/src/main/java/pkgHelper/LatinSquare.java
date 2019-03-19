@@ -18,7 +18,7 @@ public class LatinSquare {
 	 * @version 1.1
 	 * @since Lab #1
 	 */
-	public LatinSquare() {
+	public LatinSquare()  {
 
 	}
 
