@@ -1,102 +1,108 @@
 package pkgGame;
 
+import java.util.Arrays;
+
 import pkgHelper.LatinSquare;
 
 public class Sudoku extends LatinSquare {
-	int iSize;
-	int iSqrtSize;
-
-	public Sudoku(int iSize) throws Exception {
+	
+	public Sudoku() {
 		super();
-		this.iSize = iSize;
-		if (Math.sqrt(iSize) == (int) Math.sqrt(iSize))
-			this.iSqrtSize = (int) Math.sqrt(iSize);
-		else
-			throw new Exception("Size does not have integer square root");
 	}
-
-	public Sudoku(int[][] puzzle) throws Exception {
-		super(puzzle);
-
-		iSize = puzzle.length;
-
-		if (Math.sqrt(iSize) == (int) Math.sqrt(iSize))
-			this.iSqrtSize = (int) Math.sqrt(iSize);
-		else
-			throw new Exception("Size does not have integer square root");
-
+	
+	public Sudoku(int[][] latinSquare) {
+		super(latinSquare);
 	}
-
-	public int[][] getPuzzle() {
+	
+	protected int[][] getPuzzle(){
 		return super.getLatinSquare();
 	}
-
-	public int[] getRegion(int iRow, int iCol) {
-		int i = (iCol / iSqrtSize) + ((iRow / iSqrtSize) * iSqrtSize);
+	
+	protected int[] getRegion(int iRegionNbr) {
+		int num_of_length;
+		int start_row;
+		int start_col;
+		int count = 0;
+		int iSize = getPuzzle().length;
+		num_of_length = (int) Math.sqrt(iSize);
+		int[] getRegion = new int[num_of_length * num_of_length];
+		start_row = (iRegionNbr / num_of_length) * (iSize / num_of_length);
+		start_col = (iRegionNbr % num_of_length) * (iSize / num_of_length);
+		
+		for (int i = start_row ; i < start_row + num_of_length  ; i++) {
+			for (int k = start_col; k < start_col + num_of_length ; k++) {
+				getRegion[count] = getPuzzle()[i][k];
+				count = count + 1;
+				}
+		}
+		return getRegion;
+	}
+	
+	protected int[] getRegion(int Col, int Row){
+		int iSize = getPuzzle().length;
+		int iSqrtSize = (int) Math.sqrt(iSize);
+		int i = (Row/ iSqrtSize) * iSqrtSize + (Col / iSqrtSize) ;
+			
 		return getRegion(i);
 	}
-
-	public int[] getRegion(int iReg) {
-		int[][] puzzle = this.getPuzzle();
-		int[] region = new int[puzzle.length];
-		int index = 0;
-		for (int iRow = (iReg / iSqrtSize) * iSqrtSize; iRow < (((iReg / iSize) + 1) * iSqrtSize); iRow++) {
-			for (int iCol = (iReg % iSqrtSize) * iSqrtSize; iCol < (((iReg % iSqrtSize) + 1) * iSqrtSize); iCol++) {
-				region[index++] = puzzle[iRow][iCol];
+	
+	protected boolean isPartialSudoku() {
+		boolean isPartialSudoku = false;
+		int num_of_length;
+		int iSize = getPuzzle().length;
+		num_of_length = (int) Math.sqrt(iSize);
+		int num_of_region = num_of_length* num_of_length;
+		if(super.isLatinSquare()) {
+			for (int i = 0; i< num_of_region; i++ ) {
+				if (super.hasDuplicates(getRegion(i))) {
+					return false;}
+				else {
+					isPartialSudoku = true;
+				}
 			}
-		}
-		return region;
-	}
-
-	public boolean hasDuplicates() {
-		boolean hasDuplicates = false;
-		if (super.hasDuplicates(null)) {
-			return true;
-		}
-		for (int i = 0; i < this.getLatinSquare().length; i++) {
-			if (hasDuplicates(this.getRegion(i))) {
-					hasDuplicates = true;
-			}
-		}
-		return hasDuplicates;
-	}
-
-	public boolean isSoduku() {
-
-		if (!isParitalSoduku())
-			return false;
-
-		if (super.ContainsZero())
-			return false;
-
-		return true;
-	}
-
-	public boolean isParitalSoduku() {
-		for (int i = 0; i < this.iSize; i++) {
-			if (super.hasDuplicates(getRegion(i))) {
+		}else {
 				return false;
+		}
+		
+		if(super.doesElementExist(getRow(0), 0)) {
+			isPartialSudoku = true;
+			}
+		else {
+			return false;
+			}
+		
+		return isPartialSudoku;
+	}
+	
+	protected boolean isSudoku() {
+		boolean isSudoku = false;
+		if (isPartialSudoku()) {
+			if(super.ContainsZero()) {
+				return false;
+			}else {
+				isSudoku = true;
+			}	
+		}else {
+			return false;
+		}
+		return isSudoku;
+	}
+	
+	protected boolean isValueValid(int iValue, int Col, int Row) {
+		boolean isValueValid = false;
+		if(super.doesElementExist(super.getColumn(Col), iValue)) {
+			return false;
+		}else {
+			if(super.doesElementExist(super.getRow(Row), iValue)) {
+				return false;
+			}else {
+				if(super.doesElementExist(getRegion(Col,Row), iValue)) {
+					return false;
+				}else {
+					isValueValid = true;
+				}
 			}
 		}
-
-		if (!super.isLatinSquare()) {
-			return false;
-		}
-
-		return false;
+		return isValueValid;
 	}
-
-	public boolean isValidValue(int iCol, int iRow, int iValue) {
-		if (doesElementExist(super.getRow(iRow), iValue))
-			return false;
-		else if (doesElementExist(super.getColumn(iCol), iValue))
-			return false;
-		else if (doesElementExist(getRegion(iRow, iCol), iValue))
-			return false;
-
-		return true;
-
-	}
-
 }
-
